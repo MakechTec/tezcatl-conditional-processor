@@ -1,0 +1,19 @@
+{
+  "name": "@makechtec/tezcatl-process-condition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angeldomp49/tezcatl-process-condition.git"
+  },
+  "author": "makechtec",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/angeldomp49/tezcatl-process-condition/issues"
+  },
+  "homepage": "https://github.com/angeldomp49/tezcatl-process-condition#readme"
+}
