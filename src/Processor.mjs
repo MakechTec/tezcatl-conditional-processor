@@ -6,17 +6,44 @@ export class Processor{
     conditions = [];
 
     parse(text){
+        let originalText = text;
         this.read(text);
         this.count();
-
-        
+        let cleanText = this.evaluateCondition(originalText);
+        console.log(cleanText);
     }
 
-    conditionWithLessDeep(){
+    evaluateCondition(originalText) {
+        let lessDeep = this.conditionWithLessDeep(this.conditions);
+        let flag = lessDeep.flagName();
+        let newText = "";
+        if (false) {
+            if (lessDeep.pivot !== null) {
+                newText = originalText.substring(lessDeep.start.endIndex, lessDeep.pivot.startIndex);
+            }
+            else {
+                newText = originalText.substring(lessDeep.start.endIndex, lessDeep.end.startIndex);
+            }
+        }
+        else {
+            if (lessDeep.pivot !== null) {
+                newText = originalText.substring(lessDeep.pivot.endIndex, lessDeep.end.startIndex);
+            }
+            else {
+                newText = "";
+            }
+        }
 
-        let minDeep = this.conditions.map(c => c.deep).reduce((a, b) => Math.min(a, b));
-        let lessDeep = this.conditions.find(condition => condition.deep === minDeep);
-        console.log(lessDeep);
+        let originalConditionContent = originalText.substring(lessDeep.start.startIndex, lessDeep.end.endIndex);
+        let cleanText = originalText.replace(originalConditionContent, newText);
+        return cleanText;
+    }
+
+    conditionWithLessDeep(conditions){
+
+        let minDeep = conditions.map(c => c.deep).reduce((a, b) => Math.min(a, b));
+        let lessDeep = conditions.find(condition => condition.deep === minDeep);
+        return lessDeep;
     }
 
     count(){
@@ -87,7 +114,7 @@ class Pointer{
 
 class Condition{
     start;
-    pivot;
+    pivot = null;
     end;
     deep;
     conditions = [];
@@ -95,6 +122,10 @@ class Condition{
 
     add(condition){
         this.conditions.push(condition);
+    }
+
+    flagName(){
+        return this.start.content.replace("@if(", "").replace(")", "");
     }
 
     evaluate(){
