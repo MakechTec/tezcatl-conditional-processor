@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     mode: 'production',
-    entry: "./prebuild/block-extractor.mjs",
+    entry: "./src/ConditionalProcessor.mjs",
     output: {
         path: path.resolve(__dirname),
         filename: "index.js",

@@ -1,6 +1,6 @@
 {
   "name": "@makechtec/tezcatl-process-condition",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,14 @@
   "bugs": {
     "url": "https://github.com/angeldomp49/tezcatl-process-condition/issues"
   },
-  "homepage": "https://github.com/angeldomp49/tezcatl-process-condition#readme"
+  "homepage": "https://github.com/angeldomp49/tezcatl-process-condition#readme",
+  "dependencies": {
+    "@makechtec/pipe": "^1.0.4",
+    "@makechtec/tezcatl-cli": "^1.0.4"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.17.12",
+    "@babel/preset-env": "^7.18.2",
+    "babel-loader": "^8.2.5"
+  }
 }

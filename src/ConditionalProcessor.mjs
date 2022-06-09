@@ -1,23 +1,35 @@
+import { Pipe } from "@makechtec/pipe";
+import { CLI } from "@makechtec/tezcatl-cli";
 
-export class Processor{
-
-    matchesAll = [];
-    deepCount = 0;
-    conditions = [];
+export class ConditionalProcessor{
 
     parse(text){
-        let originalText = text;
-        this.read(text);
-        this.count();
-        let cleanText = this.evaluateCondition(originalText);
-        console.log(cleanText);
+
+        let newText = text;
+        let shouldBeResolved = this.isAnyCondition(newText);
+
+        while( shouldBeResolved){
+            
+            newText = new Pipe(newText)
+                        .addAction(this.read)
+                        .addAction(this.createConditions)
+                        .addAction((conditions) => {
+                            return this.evaluate(conditions, newText);
+                        })
+                        .execActions();
+
+            shouldBeResolved = this.isAnyCondition(newText);
+        }
+
+        return newText;
+        
     }
 
-    evaluateCondition(originalText) {
-        let lessDeep = this.conditionWithLessDeep(this.conditions);
+    evaluate(conditions, originalText) {
+        let lessDeep = this.conditionWithLessDeep(conditions);
         let flag = lessDeep.flagName();
         let newText = "";
-        if (false) {
+        if (CLI.isFlag(flag)) {
             if (lessDeep.pivot !== null) {
                 newText = originalText.substring(lessDeep.start.endIndex, lessDeep.pivot.startIndex);
             }
@@ -46,43 +58,45 @@ export class Processor{
         return lessDeep;
     }
 
-    count(){
+    createConditions(matchesAll){
 
-        this.deepCount = 0;
-        for(let i = 0; i < this.matchesAll.length; i++){
+        let deepCount = 0;
+        let conditions = [];
+
+        for(let i = 0; i < matchesAll.length; i++){
 
             let startRegex = new RegExp(IF_STATEMENT);
             let pivotRegex = new RegExp(ELSE_STATEMENT);
             let endRegex = new RegExp(END_IF_STATEMENT);
 
-            if(startRegex.test(this.matchesAll[i].content)){
-                this.deepCount++;
+            if(startRegex.test(matchesAll[i].content)){
+                deepCount++;
                 let condition = new Condition();
-                condition.start = this.matchesAll[i];
-                condition.deep = this.deepCount;
-                this.conditions.push(condition);
+                condition.start = matchesAll[i];
+                condition.deep = deepCount;
+                conditions.push(condition);
             }
-            else if(pivotRegex.test(this.matchesAll[i].content)){
+            else if(pivotRegex.test(matchesAll[i].content)){
 
-                for(let j = this.conditions.length - 1; j >= 0; j--){
-                    if(this.conditions[j].completed){
+                for(let j = conditions.length - 1; j >= 0; j--){
+                    if(conditions[j].completed){
                         continue;
                     }
 
-                    this.conditions[j].pivot = this.matchesAll[i];
+                    conditions[j].pivot = matchesAll[i];
                     break;
                 }
                 
             }
-            else if(endRegex.test(this.matchesAll[i].content)){
-                for(let j = this.conditions.length - 1; j >= 0; j--){
-                    if(this.conditions[j].completed){
+            else if(endRegex.test(matchesAll[i].content)){
+                for(let j = conditions.length - 1; j >= 0; j--){
+                    if(conditions[j].completed){
                         continue;
                     }
 
-                    this.conditions[j].end = this.matchesAll[i];
-                    this.conditions[j].completed = true;
-                    this.deepCount--;
+                    conditions[j].end = matchesAll[i];
+                    conditions[j].completed = true;
+                    deepCount--;
                     break;
                 }
                 
@@ -90,19 +104,31 @@ export class Processor{
 
         }
 
+        return conditions;
     }
 
     read(text) {
         let startRegex = new RegExp("(@if\\(.*\\))|(@else)|(@endif)", "g");
         let result;
+        let matchesAll = [];
+
         while ((result = startRegex.exec(text)) !== null) {
             let pointer = new Pointer();
             pointer.startIndex = result.index;
             pointer.endIndex = startRegex.lastIndex;
             pointer.content = result[0];
 
-            this.matchesAll.push(pointer);
+            matchesAll.push(pointer);
         }
+
+        return matchesAll;
+    }
+
+    isAnyCondition(text){
+        let startRegex = new RegExp("(@if\\(.*\\))", "g");
+        let endRegex = new RegExp("(@endif)", "g");
+
+        return startRegex.test(text) && endRegex.test(text);
     }
 }
 
@@ -120,25 +146,8 @@ class Condition{
     conditions = [];
     completed = false;
 
-    add(condition){
-        this.conditions.push(condition);
-    }
-
     flagName(){
         return this.start.content.replace("@if(", "").replace(")", "");
-    }
-
-    evaluate(){
-        let content = "";
-        let ownContent = " evaluated! ";
-
-        this.conditions.forEach(condition => {
-            content += condition.evaluate();
-        });
-        
-        content += ownContent;
-
-        return content;
     }
 }
 
