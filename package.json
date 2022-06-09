@@ -1,5 +1,5 @@
 {
-  "name": "@makechtec/tezcatl-process-condition",
+  "name": "@makechtec/tezcatl-conditional-processor",
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/angeldomp49/tezcatl-process-condition.git"
+    "url": "git+https://github.com/angeldomp49/tezcatl-conditional-processor.git"
   },
   "author": "makechtec",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/angeldomp49/tezcatl-process-condition/issues"
+    "url": "https://github.com/angeldomp49/tezcatl-conditional-processor/issues"
   },
-  "homepage": "https://github.com/angeldomp49/tezcatl-process-condition#readme",
+  "homepage": "https://github.com/angeldomp49/tezcatl-conditional-processor#readme",
   "dependencies": {
     "@makechtec/pipe": "^1.0.4",
     "@makechtec/tezcatl-cli": "^1.0.4"
