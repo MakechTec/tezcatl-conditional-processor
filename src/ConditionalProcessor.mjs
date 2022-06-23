@@ -151,6 +151,6 @@ class Condition{
     }
 }
 
-export const IF_STATEMENT = "@if\\(.*\\)";
-export const ELSE_STATEMENT = "@else";
-export const END_IF_STATEMENT = "@endif";
+const IF_STATEMENT = "@if\\(.*\\)";
+const ELSE_STATEMENT = "@else";
+const END_IF_STATEMENT = "@endif";
