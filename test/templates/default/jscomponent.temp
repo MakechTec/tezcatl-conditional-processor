@@ -1,38 +1,5 @@
-@foreach(import)
-import ${import} from '';
-@endforeach
-
-@if(class)
-export default class ${component}{
-	@if(state)
-	@endif
-}
-@else
-export const ${component} = {
-    
-};
-export default ${component};
+@if  (absolute)
+position: absolute;
+@else 
+position: relative;
 @endif
-@if(func)
-export const ${component} = () => {
-    return;
-};
-
-export default ${component};
-@endif
-
-@foreach(const)
-export const ${const} = () => {
-	return (
-		<div>
-			<h1>${const}</h1>
-		</div>
-	);
-};
-@endforeach
-
-@foreach(func)
-export const ${func} = () => {
-    return;
-};
-@endforeach

@@ -1,9 +1,14 @@
 import { Pipe } from "@makechtec/pipe";
-import { CLI } from "@makechtec/tezcatl-cli";
+import { CLI, Pattern } from "@makechtec/tezcatl-cli";
 
 export class ConditionalProcessor{
 
     parse(text){
+
+        if(this.isBadCondition(text)){
+            console.error("Error: conditional statement is not well formed or is not closed");
+            return "";
+        }
 
         let newText = text;
         let shouldBeResolved = this.isAnyCondition(newText);
@@ -108,7 +113,7 @@ export class ConditionalProcessor{
     }
 
     read(text) {
-        let startRegex = new RegExp("(@if\\(.*\\))|(@else)|(@endif)", "g");
+        let startRegex = new RegExp(ANY_STATEMENT, "g");
         let result;
         let matchesAll = [];
 
@@ -125,10 +130,20 @@ export class ConditionalProcessor{
     }
 
     isAnyCondition(text){
-        let startRegex = new RegExp("(@if\\(.*\\))", "g");
-        let endRegex = new RegExp("(@endif)", "g");
+        let startRegex = new RegExp(IF_STATEMENT, "g");
+        let endRegex = new RegExp(END_IF_STATEMENT, "g");
 
         return startRegex.test(text) && endRegex.test(text);
+    }
+
+    isBadCondition(text){
+        let startRegex = new RegExp(IF_STATEMENT, "g");
+        let endRegex = new RegExp(END_IF_STATEMENT, "g");
+
+        let countMatchesStart = Pattern.countMatches(text, startRegex);
+        let countMatchesEnd = Pattern.countMatches(text, endRegex);
+
+        return countMatchesStart !== countMatchesEnd;
     }
 }
 
@@ -147,10 +162,11 @@ class Condition{
     completed = false;
 
     flagName(){
-        return this.start.content.replace("@if(", "").replace(")", "");
+        return this.start.content.replace(new RegExp(/@if\s*\(/), "").replace(new RegExp(/\s*\)/), "");
     }
 }
 
-export const IF_STATEMENT = "@if\\(.*\\)";
+export const IF_STATEMENT = "@if\\s*\\(\\s*([a-z|A-Z|\\d]*)\\s*?\\)";
 export const ELSE_STATEMENT = "@else";
 export const END_IF_STATEMENT = "@endif";
+export const ANY_STATEMENT = "("+IF_STATEMENT+")|("+ELSE_STATEMENT+")|("+END_IF_STATEMENT+")";

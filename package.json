@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "webpack",
+    "test": "node test/index.mjs --absolute",
+    "test2": "node test/index.mjs"
   },
   "repository": {
     "type": "git",
@@ -17,12 +19,13 @@
   },
   "homepage": "https://github.com/angeldomp49/tezcatl-conditional-processor#readme",
   "dependencies": {
-    "@makechtec/pipe": "^1.0.4",
-    "@makechtec/tezcatl-cli": "^1.0.4"
+    "@makechtec/pipe": "^1.0.6",
+    "@makechtec/tezcatl-cli": "^1.0.11"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.17.12",
-    "@babel/preset-env": "^7.18.2",
-    "babel-loader": "^8.2.5"
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "babel-loader": "^8.2.5",
+    "webpack-cli": "^4.10.0"
   }
 }
