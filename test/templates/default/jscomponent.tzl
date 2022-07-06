@@ -1,1 +1,6 @@
-@if(export) export @endif const
+@if(export) 
+sfddfs
+@else
+export 
+@endif 
+const

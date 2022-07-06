@@ -3,7 +3,7 @@ import fs from "node:fs";
 
 let processor = new ConditionalProcessor();
 
-let text = fs.readFileSync("./test/templates/default/jscomponent.temp", "utf8");
+let text = fs.readFileSync("./test/templates/default/jscomponent.tzl", "utf8");
 
 let newText = processor.parse(text);
 

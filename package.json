@@ -1,11 +1,11 @@
 {
   "name": "@makechtec/tezcatl-conditional-processor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
     "compile": "webpack",
-    "test": "node test/index.mjs --absolute",
+    "test": "node test/index.mjs",
     "test2": "node test/index.mjs"
   },
   "repository": {
