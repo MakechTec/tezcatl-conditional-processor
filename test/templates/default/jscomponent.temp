@@ -1,5 +1,0 @@
-@if  (absolute)
-position: absolute;
-@else 
-position: relative;
-@endif

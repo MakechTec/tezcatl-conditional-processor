@@ -19,8 +19,8 @@
   },
   "homepage": "https://github.com/angeldomp49/tezcatl-conditional-processor#readme",
   "dependencies": {
-    "@makechtec/pipe": "^1.0.6",
-    "@makechtec/tezcatl-cli": "^1.0.11"
+    "@makechtec/pipe": "^1.0.7",
+    "@makechtec/tezcatl-cli": "^1.0.12"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
